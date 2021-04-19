@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="6d4879fd-a3a9-4e77-9313-ab97c39c5a82" name="bioserver">
+        <fileTransfer rootFolder="/home/student6/03.Unona/" accessType="SFTP" host="46.148.231.79" port="9212" sshConfigId="c9a095c7-7cea-4d35-be81-2512be1d6b53" sshConfig="student6@46.148.231.79:9212 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

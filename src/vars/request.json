@@ -1,0 +1,30 @@
+[
+    {
+      "id": 1,
+      "Gene": 2,
+      "Organism": "Human",
+      "Where": "somewhere",
+      "siRNA": " ATTTAATATAT"
+    },
+    {
+      "id": 2,
+      "Gene": 4535,
+      "Organism": "Frog",
+      "Where": "somewhere",
+      "siRNA": " ATGGGGCGTTGC"
+    },
+    {
+      "id": 3,
+      "Gene": 2,
+      "Organism": "Human",
+      "Where": "somewhere",
+      "siRNA": " ATTTAATATAT"
+    },
+    {
+      "id": 4,
+      "Gene": 4535,
+      "Organism": "Frog",
+      "Where": "somewhere",
+      "siRNA": " ATGGGGCGTTGC"
+    }
+   ]
