@@ -53,6 +53,9 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import logoImage from "../img/output-onlinepngtools.png"
 
 import tsv_data from "../vars/geneNames.txt"
+import { stringify } from "postcss";
+
+const axios = require('axios').default;
 
 const geneNamesDef = ["tete", "ded", "dedaa", "dsfrteg", "ddsadte"]
 const geneIds = [3,4,1,24,455,2221,23]
@@ -66,8 +69,13 @@ export default function MainPage() {
   const [emailFocus, setEmailFocus] = React.useState(false);
   const [passwordFocus, setPasswordFocus] = React.useState(false);
 
+
   const [geneIds, setGeneIds] = React.useState([]);
   const [geneNames, setGeneNames] = React.useState([]);
+  const [geneEnsIds, setGeneEnsIds] = React.useState([]);
+
+  const [inputGeneType, setInputGeneType] = React.useState(true);
+  const [curGeneName, setCurGeneName] = React.useState("0");
 
   const arrayColumn = (arr, n) => arr.map(x => x[n]);
   const arrayRemove = (arr, value) => {
@@ -78,20 +86,51 @@ export default function MainPage() {
   }
 
   React.useEffect(() => {
-
-
-     d3.tsv(tsv_data)
-        .then(data => {
-          console.log(data)
-          setGeneIds(
-              arrayRemove(arrayColumn(data, "NCBI gene ID").sort(), "")
-          )
-          setGeneNames(
-              arrayRemove(arrayColumn(data, "Approved symbol").slice(10).sort(), "")
-          )
-          console.log(geneIds)
-          console.log(arrayRemove(arrayColumn(data, "NCBI gene ID").slice(10).sort(), ""))
+  
+    console.log(1)
+    let link = "http://localhost:8000/shrna_model/rest/gene/"
+    console.log(2)
+    let result = axios({
+        url: link,
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: "JSON.stringify({id: id}) 1"
     })
+    .then(res => {
+      let data =  res.data
+      console.log('!!!', data)
+      console.log(arrayRemove(arrayColumn(data, "name").slice(10).sort(), ""))
+
+      setGeneIds(
+          // arrayRemove(arrayColumn(data, "ncbi_id").slice(10).sort(), "")
+        arrayRemove(arrayColumn(data, "ncbi_id").sort(), "")
+      )
+
+      setGeneNames(
+        arrayRemove(arrayColumn(data, "name").sort(), "")
+      )
+
+      setGeneEnsIds (
+        arrayRemove(arrayColumn(data, "ensembl_id").sort(), "")
+      )
+    })
+
+    
+    // console.log(3)
+    //  d3.tsv(tsv_data)
+    //     .then(data => {
+    //       console.log(data)
+    //       setGeneIds(
+    //           arrayRemove(arrayColumn(data, "NCBI gene ID").slice(10).sort(), "")
+    //       )
+    //       setGeneNames(
+    //           arrayRemove(arrayColumn(data, "Approved symbol").slice(10).sort(), "")
+    //       )
+    //       console.log(geneIds)
+    //       console.log(arrayRemove(arrayColumn(data, "NCBI gene ID").slice(10).sort(), ""))
+    // })
 
 
 
@@ -105,8 +144,6 @@ export default function MainPage() {
   },[]);
 
   const followCursor = (event) => {
-
-
     let posX = event.clientX - window.innerWidth / 2;
     let posY = event.clientY - window.innerWidth / 6;
     setSquares1to6(
@@ -125,6 +162,21 @@ export default function MainPage() {
     );
   };
 
+  const handleSubmit= (e) => {
+    e.preventDefault();
+    console.log(inputGeneType)
+    console.log(curGeneName)
+    if (inputGeneType == true){
+      console.log(geneIds[curGeneName])}
+    else {
+      console.log(geneNames[curGeneName])
+    }
+
+
+
+    // переход на     to="results" tag={Link}
+
+  }
 
   return (
     <>
@@ -152,12 +204,16 @@ export default function MainPage() {
 
                     </CardHeader>
                     <CardBody>
-                      <Form className="form">
+                      <Form className="form" onSubmit={e => { handleSubmit(e) }}>
                         <InputGroup style={{paddingBottom:20, paddingLeft: 7}}>
                         <span style={{paddingRight:17, paddingTop:9}}>
                           Name
                         </span>
-                          <CustomInput type="switch" id="switch" />
+                          <CustomInput type="switch" id="switch" 
+                            checked={inputGeneType}
+                            onChange={e => setInputGeneType(e.target.checked)}
+            
+                          />
                         <span style={{paddingTop:9}}>
                           NCBI id
                         </span>
@@ -183,8 +239,15 @@ export default function MainPage() {
 
                           <InputGroup>
 
-                            <Input type="select" name="select" id="exampleSelect1" multiple >
-                                {geneNamesDef.map((value, index) => <option value={index} >{value}</option>)}
+                            <Input type="select" name="select" id="exampleSelect1" multiple 
+                              value={curGeneName}
+                              onChange={e => setCurGeneName(e.target.value)}
+                            >
+                            
+                            {inputGeneType
+                              ? geneIds.map((value, index) => <option value={index} >{value}</option>)
+                              : geneNames.map((value, index) => <option value={index} >{value}</option>)
+                            }
                             </Input>
 
                           </InputGroup>
@@ -197,13 +260,11 @@ export default function MainPage() {
                         {/*>*/}
                         {/*{geneNames.map((value, index) => <option value={index} >{value}</option>)}*/}
                         {/*</SelectSearch> *!/*/}
-
-                      </Form>
-                      <Button className="btn-round" color="primary" size="lg"
-                        to="results" tag={Link}
-                      >
-                        Find siRNA 
+                        <Button className="btn-round" color="primary" size="lg" type='submit'>
+                          Find siRNA 
                         </Button> 
+                      </Form>
+
                     </CardBody>
                   </Card>
                 </Col>

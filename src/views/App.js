@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/App.css';
 
-import 'rsuite/lib/styles/themes/dark/index.less';
+// import 'rsuite/lib/styles/themes/dark/index.less';
 
 /** import default css */
 // import 'rsuite/dist/styles/rsuite-default.css';
