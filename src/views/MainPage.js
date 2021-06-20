@@ -38,6 +38,7 @@ import {
   Container,
   Row,
   Col,
+  FormText,
 } from "reactstrap";
 
 import { Image } from 'react-bootstrap';
@@ -87,35 +88,40 @@ export default function MainPage() {
 
   React.useEffect(() => {
   
-    console.log(1)
-    let link = "http://localhost:8000/shrna_model/rest/gene/"
-    console.log(2)
-    let result = axios({
-        url: link,
-        method: 'get',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        data: "JSON.stringify({id: id}) 1"
-    })
-    .then(res => {
-      let data =  res.data
-      console.log('!!!', data)
-      console.log(arrayRemove(arrayColumn(data, "name").slice(10).sort(), ""))
+    // console.log(1)
+    // let link = "http://localhost:8000/shrna_model/rest/gene/"
+    // // let link = "http://shrna.itnap.ru/:2999/shrna_model/rest/gene/"
+    // console.log(2)
+    
+    // axios({
+    //     url: link,
+    //     method: 'get',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     }
+    //     // data: "JSON.stringify({id: id})"
+    // })
 
-      setGeneIds(
-          // arrayRemove(arrayColumn(data, "ncbi_id").slice(10).sort(), "")
-        arrayRemove(arrayColumn(data, "ncbi_id").sort(), "")
-      )
+    // .then(res => {
+    //   console.log(4)
+    //   let data =  res.data
+    //   console.log('!!!', data)
+    //   console.log(arrayRemove(arrayColumn(data, "name").slice(10).sort(), ""))
 
-      setGeneNames(
-        arrayRemove(arrayColumn(data, "name").sort(), "")
-      )
-
-      setGeneEnsIds (
-        arrayRemove(arrayColumn(data, "ensembl_id").sort(), "")
-      )
-    })
+    //   setGeneIds(
+    //       // arrayRemove(arrayColumn(data, "ncbi_id").slice(10).sort(), "")
+    //     arrayRemove(arrayColumn(data, "ncbi_id").sort(), "")
+    //   )
+    //   setGeneNames(
+    //     arrayRemove(arrayColumn(data, "name").sort(), "")
+    //   )
+    //   setGeneEnsIds (
+    //     arrayRemove(arrayColumn(data, "ensembl_id").sort(), "")
+    //   )
+    // }, function(e) {
+    //   console.log(e)
+    // })
+  
 
     
     // console.log(3)
@@ -172,8 +178,11 @@ export default function MainPage() {
       console.log(geneNames[curGeneName])
     }
 
+    
+    // window.open("http://shrna.itnap.ru:3000/results", "_blank");
+    window.open("http://shrna.itnap.ru:3000/results", "_blank");
 
-
+    // this.props.history.push("/results/")
     // переход на     to="results" tag={Link}
 
   }
@@ -200,12 +209,12 @@ export default function MainPage() {
                   />
                   <Card className="card-register" style={{marginTop:"50px"}}>
                     <CardHeader>
-                      <CardTitle tag="h5">Choose your gene</CardTitle>
+                      <CardTitle tag="h5">Загрузите данные</CardTitle>
 
                     </CardHeader>
                     <CardBody>
                       <Form className="form" onSubmit={e => { handleSubmit(e) }}>
-                        <InputGroup style={{paddingBottom:20, paddingLeft: 7}}>
+                        {/* <InputGroup style={{paddingBottom:20, paddingLeft: 7}}>
                         <span style={{paddingRight:17, paddingTop:9}}>
                           Name
                         </span>
@@ -217,9 +226,9 @@ export default function MainPage() {
                         <span style={{paddingTop:9}}>
                           NCBI id
                         </span>
-                        </InputGroup>
+                        </InputGroup> */}
 
-                        <InputGroup
+                        {/* <InputGroup
                           className={classnames({
                             "input-group-focus": fullNameFocus,
                           })}
@@ -235,9 +244,9 @@ export default function MainPage() {
                             onFocus={(e) => setFullNameFocus(true)}
                             onBlur={(e) => setFullNameFocus(false)}
                           />
-                        </InputGroup>
+                        </InputGroup> */}
 
-                          <InputGroup>
+                          {/* <InputGroup>
 
                             <Input type="select" name="select" id="exampleSelect1" multiple 
                               value={curGeneName}
@@ -250,7 +259,48 @@ export default function MainPage() {
                             }
                             </Input>
 
-                          </InputGroup>
+                          </InputGroup> */}
+
+                          {/* <h3> Пол анализируемого</h3><br/> */}
+                          <label>Пол пациента</label>
+                          <InputGroup>
+
+                            {/* <legend style={{fontSize:"15px"}}>Пол анализируемого</legend> */}
+                            
+                              <FormGroup check>
+                                <Label check>
+                                  <Input type="radio" name="radio1" />{' '}
+                                  Женский
+                                </Label>
+                              </FormGroup>
+                              <FormGroup check>
+                                <Label check>
+                                  <Input type="radio" name="radio1" />{' '}
+                                    Мужской
+                                </Label>
+                              </FormGroup>
+                              <FormGroup check>
+                                <Label check>
+                                  <Input type="radio" name="radio1" />{' '}
+                                    Неважно
+                                </Label>
+                              </FormGroup>
+
+                            </InputGroup>
+
+                            <label>Возраст пациента</label><br/>
+                            <InputGroup>
+
+                              {/* <legend style={{fontSize:"15px"}}>Возраст анализируемого</legend> */}
+                              <Input name="password" id="examplePassword" placeholder="number only" />
+                            </InputGroup>
+                            <InputGroup>
+                              <label for="file">Выберете табличный файл с RR интервалами</label>
+                              <input type="file" />
+                            </InputGroup> 
+
+                          
+
 
 
                         {/*<SelectSearch*/}
@@ -260,9 +310,11 @@ export default function MainPage() {
                         {/*>*/}
                         {/*{geneNames.map((value, index) => <option value={index} >{value}</option>)}*/}
                         {/*</SelectSearch> *!/*/}
-                        <Button className="btn-round" color="primary" size="lg" type='submit'>
-                          Find siRNA 
+                        <Link to="/results">
+                        <Button className="btn-round" color="primary" size="lg">
+                          Детектировать аномалии
                         </Button> 
+                        </Link>
                       </Form>
 
                     </CardBody>
@@ -274,7 +326,7 @@ export default function MainPage() {
                     float: "right", zIndex:"10", paddingRight:"40px"}}/>
                   <h1 style={{color: "white", fontSize:"80px", fontWeight:"bolder", textAlign:"right"}}>
                     Unona</h1>
-                  <h3 style={{textAlign:"right", fontSize:"25px"}}>Desing siRNA service</h3>
+                  <h3 style={{textAlign:"right", fontSize:"25px"}}>Детектор ковидных <br/>аномалий в ритме сердца</h3>
 
                 </Col>
               </Row>
